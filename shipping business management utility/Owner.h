@@ -8,16 +8,13 @@ using namespace std;
 class Owner: public Person   //derived Class
 {
 private:
-    OwnerShip OwnerShip;     //composition
+    OwnerShip _ownership;     //composition
 public:
-    Owner(/* args */);
+    Owner();
+    Owner(string, string);
     ~Owner();
 };
-
-Owner::Owner(/* args */)
-{
-}
-
+Owner::Owner(string name, string surname):Person(name, surname){}
 Owner::~Owner()
 {
 }
