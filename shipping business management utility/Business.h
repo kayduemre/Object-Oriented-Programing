@@ -1,3 +1,12 @@
+/*
+    Emre KAYDU
+    150160552
+
+*/
+#ifndef BUSINESS_H
+#define BUSINESS_H
+#include <iostream>
+#include <string>
 #include "Courier.h"
 #include "Owner.h"
 
@@ -20,31 +29,59 @@ public:
     void fire_courier(const Courier &);
     void list_couriers()const;
     void list_owners()const;
-    void calculate_shipment_capacity();
+    int calculate_shipment_capacity();
+    
     void operator()()const;
     Courier operator[](int );
+
+    string getName(){return _name;};
+    string getAdress(){return _address;};
+    int getNumberofowner(){return _number_of_owners;};
+    Owner *getOwner(){return _owners;};
+
+
+
     ~Business();
 };
+
+int Business::calculate_shipment_capacity()
+{
+    Courier *traverse = _curiers;
+    int capacity = 0;
+    if (_curiers != NULL)
+    {
+        while (traverse != NULL)
+        {
+            capacity += traverse->getVehicle().getcapacity();
+            traverse = traverse->next;
+        }
+        return capacity;
+    }
+   
+}
 Business::Business()
 {
     _curiers = NULL;
 }
 Business::Business(string name, string address,const Owner *owner_array, int number_of_owners)
 {
-    _name = name;
-    _address = address;
+    _name.assign(name);
+    _address.assign(address);
     _number_of_owners = number_of_owners;
-    _owners = new Owner[number_of_owners];
-    *_owners = *owner_array;
+    _owners = new Owner[_number_of_owners];
 
+    for (int i = 0; i < _number_of_owners; i++)
+    {
+        _owners[i] = owner_array[i];
+    }
+    
 }
 
 void Business::operator()()const
 {
-    cout << _name <<","<<_address;
+    cout << _name <<","<<_address<<endl;
     list_owners();
     list_couriers();
-
 }
 
 Courier Business::operator[](int index)
@@ -53,25 +90,30 @@ Courier Business::operator[](int index)
     traverse = _curiers;
     if (traverse != NULL)
     {
-       while (traverse != NULL && (traverse->_index != index))
+
+        if (traverse->getOrder() == index)
+        {
+            return *traverse;
+        }
+        
+       while (traverse != NULL && (traverse->getOrder() != index))
        {
             tail = traverse;
             traverse = traverse->next;
        }
        if (traverse == NULL)
        {
+            
            cout <<"there is no curier"<<endl;
-           return;
+        
        }
-       
-       if ((traverse->_index == index))
+       else if ((traverse->getOrder() == index))
        {
+          
            return *traverse;
        }
        
-       
     }
-    return;
 }
 
 void Business::fire_courier(const Courier &courier)
@@ -80,7 +122,14 @@ void Business::fire_courier(const Courier &courier)
     traverse = _curiers;
     if (traverse != NULL)
     {
-       while (traverse != NULL && (traverse->_index != courier._index))
+        if (traverse->getOrder() == courier.getOrder())
+        {
+            _curiers = traverse->next;
+            delete traverse;
+            return;
+        }
+        
+       while (traverse != NULL && (traverse->getOrder() != courier.getOrder()))
        {
             tail = traverse;
             traverse = traverse->next;
@@ -90,11 +139,12 @@ void Business::fire_courier(const Courier &courier)
            cout <<"there is no curier"<<endl;
            return;
        }
-       
-       if ((traverse->_index == courier._index))
+
+       if ((traverse->getOrder() == courier.getOrder()))
        {
-           traverse = traverse->next;
+           tail->next = traverse->next;
            delete traverse;
+           return;
        }
        
        
@@ -105,7 +155,10 @@ void Business::hire_courier(const Courier &courier)
 {
     Courier *traverse, *newcourier, *tail;
     traverse = _curiers;
-    *newcourier = *newcourier;
+    newcourier = new Courier();
+    *newcourier = courier;
+    newcourier->next = NULL;
+
 
     if (_curiers == NULL)
     {
@@ -134,7 +187,9 @@ void Business::list_couriers()const
     {
         while (traverse != NULL)
         {
-            cout<< traverse->getName();
+            cout<< traverse->getName()<<" ";
+            cout<< traverse->getSurname()<<" ";
+            cout<< traverse->getVehicle().gettype()<<endl;
             traverse = traverse->next;
         }
         
@@ -144,13 +199,24 @@ void Business::list_couriers()const
 
 void Business::list_owners()const
 {
+
     for (int i = 0; i < _number_of_owners; i++)
     {
-        cout << _owners[i].getName() <<", "<< _owners[i].getSurname()<<endl;
+        cout << _owners[i].getName() <<" "<< _owners[i].getSurname()<<" "<< _owners[i].getPercentage()<<endl;
     }
-    
 }
 
 Business::~Business()
 {
+   Courier *traverse, *next;
+   traverse = _curiers;
+
+   while (traverse != NULL)
+   {
+       next = traverse->next;
+       delete traverse;
+       traverse = next;
+   }
+   delete [] _owners;
 }
+#endif
