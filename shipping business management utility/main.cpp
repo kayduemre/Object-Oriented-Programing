@@ -1,4 +1,12 @@
+/*
+    Emre KAYDU
+    150160552
+
+*/
+
+
 #include <iostream>
+
 #include "Business.h"
 
 int main(){
@@ -6,9 +14,10 @@ int main(){
     //Constructor parameters: name, surname
     Owner o1 = Owner("Owner_name1", "surname1");
     Owner o2 = Owner("Owner_name2", "surname2");
-    Owner* owner_arr = new Owner[2];
+    
+    Owner* owner_arr = new Owner[3];
     owner_arr[0] = o1;
-    owner_arr[1] = o1;    
+    owner_arr[1] = o2;
 
     //Crete the business itself
     //Constructor parameters: name, address, owner_array, number_of_owners
@@ -21,13 +30,13 @@ int main(){
     // Constructor parameters: name, surname, vehicle_type
     Courier c1 = Courier("Courier", "surname1", "car");
     Courier c2 = Courier("Courier", "surname2", "motorcycle");
-    Courier c3 = Courier("Courier", "surname3", "motorcycle");    
+    Courier c3 = Courier("Courier", "surname3", "motorcycle");
+
 
     atlas.hire_courier(c1);
-    atlas.hire_courier(c2);
+    atlas.hire_courier(c2);           
     atlas.hire_courier(c3);
-
-
+   
     // Print business info to screen
     // Name, address, owners, couriers
     atlas();
