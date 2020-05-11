@@ -1,76 +1,45 @@
 #include <iostream>
 #include <string>
+
+#include "Layer.h"
 using namespace std;
 
 class Network
 {
 private:
-    int _layer;
-    int *_neuronNumber;
-    int *_neuronType;
-    int *_input;
 
-    float **_w;
-    float **_b;
+    Layer *_layer;
+    int *_input;
    
 public:
-    Network(string, string, string, string);
+    Network(int);
+
+    void print();
+    void setLayer(const Layer &, int);
     void setW(int, int);
     void setB(int, int);
     ~Network();
 };
 
-Network::Network(string layer, string neuronNumber, string neuronType, string input)
+void Network::print()
 {
-    _layer = stoi(layer);
-    _neuronNumber = new int[_layer];
-    _neuronType = new int[_layer];
-
-    for (int i = 0; i < _layer; i++)
+    for (int i = 0; i < 3; i++)
     {
-        char *n = &neuronNumber[i];
-        char *t = &neuronType[i];
-        char *ı = &input[i];
-        _neuronNumber[i] = atoi(n);
-        _neuronType[i] = atoi(t);
-        _input[i] = atoi(ı);
+       cout<< _layer[i].getIndex();
     }
-}
-
-void Network::setW(int row, int col)
-{
-    _w = new float*[row];
-    for (int i = 0; i < row; i++)
-        _w[i] = new float[col];
-
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; i < col; i++)
-        {
-            _w[i][j] = 0.1;
-        }
-        
-    }
-    
     
 }
 
-void Network::setB(int row, int col)
+Network::Network(int layerNumber)
 {
-    _b = new float*[row];
-    for (int i = 0; i < row; i++)
-        _b[i] = new float[col];
-    
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; i < col; i++)
-        {
-            _w[i][j] = 0.1;
-        }
-        
-    }
+   _layer = new Layer[layerNumber];
 }
 
+void Network::setLayer(const Layer &layer, int index)
+{
+   _layer[index] = layer;
+
+}
 Network::~Network()
 {
 }
