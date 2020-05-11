@@ -42,6 +42,16 @@ void Network::setW(int row, int col)
     _w = new float*[row];
     for (int i = 0; i < row; i++)
         _w[i] = new float[col];
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; i < col; i++)
+        {
+            _w[i][j] = 0.1;
+        }
+        
+    }
+    
     
 }
 
@@ -50,6 +60,15 @@ void Network::setB(int row, int col)
     _b = new float*[row];
     for (int i = 0; i < row; i++)
         _b[i] = new float[col];
+    
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; i < col; i++)
+        {
+            _w[i][j] = 0.1;
+        }
+        
+    }
 }
 
 Network::~Network()
