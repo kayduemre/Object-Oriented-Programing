@@ -3,7 +3,7 @@
 #include "Neuron.h"
 #include "Sigmoid.h"
 
-
+using namespace std; 
 class Layer
 {
 private:
@@ -13,6 +13,8 @@ private:
 public:
     Layer(){_index = 0;};
     Layer(int,int);
+
+    void createNeuron(int ,int);
     void setInput(int *, int);
     ~Layer();
 };
@@ -32,6 +34,38 @@ void Layer::setInput(int *arr, int size)
         _input[i][0] = arr[i];
     }
     
+}
+
+void Layer::createNeuron(int type, int number)
+{
+    Neuron *traverse, *tail, *temp;
+    if (type == 0)
+    {
+        Sigmoid sigmoid(0.0,0.0);
+        temp = &sigmoid;
+    }
+    if (type == 1)
+    {
+        cout<<"Leaky ReLU";
+    }
+    if (type == 2)
+    {
+        cout<<"ReLU";
+    }
+
+    traverse = neurons;
+
+    if (neurons == NULL)
+    {
+        neurons = temp;
+        return;
+    }
+    
+    for (int i = 0; i < number; i++)
+    {
+        traverse->next = temp;
+        traverse = traverse->next;
+    }
 }
 
 Layer::~Layer()
