@@ -7,10 +7,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     ifstream in("input1.txt");
-    string number_of_level;
-    string neurons_number_of_level;
-    string neuron_type;
-    string input;
+    int layer;
 
 
     if (!in.is_open())
@@ -18,22 +15,32 @@ int main(int argc, char const *argv[])
         cout<<"ERROR: File could not been open"<<endl;
     }
 
-    while (in.peek() !=EOF)
-    {
+    in >> layer;
+    int neuronNumber[layer];
+    int neurontype[layer];
+    int input[layer];
 
-        getline(in,number_of_level,'\n');
-        
-		getline(in,neurons_number_of_level,'\n');
-        
-		getline(in,neuron_type,'\n');
-        
-		getline(in,input,'\n');
-        
+    for (int i = 0; i < layer; i++)
+    {
+        in>> neuronNumber[i];
     }
+
+    for (int i = 0; i < layer; i++)
+    {
+        in>> neurontype[i];
+    }
+
+    for (int i = 0; i < layer; i++)
+    {
+        in>> input[i];
+    }
+ 
     in.close();
 
-    Network *network = new Network(number_of_level, neurons_number_of_level, neuron_type, input);
+    Network network(neuronNumber[1], neuronNumber[0], layer);
 
-    
+    Layer layer0(neuronNumber[1], neuronNumber[0]);
+    layer0.setInput(input, layer);
+
     return 0;
 }
