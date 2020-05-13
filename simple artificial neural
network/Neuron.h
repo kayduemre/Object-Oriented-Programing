@@ -6,6 +6,8 @@ protected:
     float w, b;
     float _z, _a;
 public:
+    Neuron* next;
+
     Neuron(float, float);
 
     virtual void activate() const = 0;
@@ -13,6 +15,8 @@ public:
 
 Neuron::Neuron(float z, float a)
 {
+    next = NULL;
+
     w = 0.1;
     b = 0.1;
     _z = z;
