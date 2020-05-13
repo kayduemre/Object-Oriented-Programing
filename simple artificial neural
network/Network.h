@@ -1,3 +1,5 @@
+#ifndef NETWORK_H
+#define NETWORK_H
 #include <iostream>
 #include <string>
 
@@ -8,16 +10,17 @@ class Network
 {
 private:
 
-    Layer *_layer;
-    int *_input;
+    Layer* _layer;
+
+    
+    float** _W;
+    float** _B;
    
 public:
-    Network(int);
+    Network(int, int, int);
 
     void print();
     void setLayer(const Layer &, int);
-    void setW(int, int);
-    void setB(int, int);
     ~Network();
 };
 
@@ -25,15 +28,41 @@ void Network::print()
 {
     for (int i = 0; i < 3; i++)
     {
-       cout<< _layer[i].getIndex();
+       //cout<< _layer[i].getIndex();
     }
     
 }
 
-Network::Network(int layerNumber)
+Network::Network(int row, int col, int layerNumber)
 {
-   _layer = new Layer[layerNumber];
+    _layer = new Layer[layerNumber];
+
+    _W = new float*[row];
+    for(int i = 0; i < row; ++i)
+        _W[i] = new float[col];
+
+    _B = new float*[row];
+    for(int i = 0; i < row; ++i)
+        _B[i] = new float[0];
+    
+    
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            _W[i][j] = 0.1;
+        }
+        
+    }
+
+    for (int i = 0; i < row; i++)
+    {
+        _B[i][0] = 0.1;
+    }
 }
+
+
 
 void Network::setLayer(const Layer &layer, int index)
 {
@@ -43,3 +72,4 @@ void Network::setLayer(const Layer &layer, int index)
 Network::~Network()
 {
 }
+#endif
