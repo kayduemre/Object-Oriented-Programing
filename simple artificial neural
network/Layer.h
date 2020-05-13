@@ -2,6 +2,8 @@
 #define LAYER_H
 #include "Neuron.h"
 #include "Sigmoid.h"
+#include "ReluNeuron.h"
+#include "LReluNeuron.h"
 
 using namespace std; 
 class Layer
@@ -46,11 +48,13 @@ void Layer::createNeuron(int type, int number)
     }
     if (type == 1)
     {
-        cout<<"Leaky ReLU";
+        ReluNeuron reluNeuron(0.0,0.0);
+        temp = &reluNeuron;
     }
     if (type == 2)
     {
-        cout<<"ReLU";
+        LReluNeuron lReluNeuron(0.0,0.0);
+        temp = &lReluNeuron;
     }
 
     traverse = neurons;
