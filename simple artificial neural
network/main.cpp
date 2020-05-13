@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "Network.h"
+#include "Neuron.h"
 #include <fstream>
 
 using namespace std;
@@ -39,8 +41,19 @@ int main(int argc, char const *argv[])
 
     Network network(neuronNumber[1], neuronNumber[0], layer);
 
+    //layer 0 input layer
     Layer layer0(neuronNumber[1], neuronNumber[0]);
     layer0.setInput(input, layer);
+    layer0.createNeuron(neuronNumber[0], neurontype[0]);
+    network.setLayer(layer0,0);
+
+    for (int i = 1; i < layer; i++)
+    {
+        Layer newlayer(neuronNumber[i + 1], neuronNumber[i]);
+        newlayer.createNeuron(neuronNumber[i], neurontype[i]);
+        network.setLayer(newlayer, i);
+    }
+    
 
     return 0;
 }
