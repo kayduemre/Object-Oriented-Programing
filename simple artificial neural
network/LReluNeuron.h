@@ -3,17 +3,17 @@
 class LReluNeuron:public Neuron
 {
 protected:
-    
+
 public:
     LReluNeuron(float z, float a):Neuron(z,a){}
-    void activate()const;
+    float activate()const;
     ~LReluNeuron();
 };
 
 LReluNeuron::~LReluNeuron()
 {
 }
-void LReluNeuron::activate()const
+float LReluNeuron::activate()const
 {
-    std::cout<<"virtual function";
+    return max(float(0.1*_z),_z);
 }
