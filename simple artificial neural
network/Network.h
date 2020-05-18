@@ -21,6 +21,7 @@ public:
 
     void print();
     void setLayer(const Layer &, int);
+    void updateLayer(int, int, int);
     ~Network();
 };
 
@@ -62,7 +63,10 @@ Network::Network(int row, int col, int layerNumber)
     }
 }
 
-
+void Network::updateLayer(int value, int lIndex, int nIndex)
+{
+    this->_layer[lIndex].setNeuron(value, nIndex);
+}
 
 void Network::setLayer(const Layer &layer, int index)
 {
