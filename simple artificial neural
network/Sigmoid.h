@@ -1,19 +1,20 @@
 #ifndef SIGMOID_H
 #define SIGMOID_H
 #include "Neuron.h"
+#include <math.h>
 
 class Sigmoid:public Neuron
 {
-private:
+protected:
    
 public:
     Sigmoid(float z, float a):Neuron(z,a){}
-    void activate()const;
+    float activate()const;
     
 };
-void Sigmoid::activate()const
+float Sigmoid::activate()const
 {
-    std::cout<<"virtual function";
+    return 1/(1 + exp(this->_z));
 }
 
 #endif
