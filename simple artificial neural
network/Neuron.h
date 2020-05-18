@@ -4,13 +4,17 @@ class Neuron
 {
 protected:
     float w, b;
-    float _z, _a;
+    float _z;
+    
 public:
+float _a;
     Neuron* next;
 
     Neuron(float, float);
-
-    virtual void activate() const = 0;
+    void setZ(int z){_z = z; };
+    float getW(){return w;};
+    float getB(){return b;};
+    virtual float activate() const = 0;
 };
 
 Neuron::Neuron(float z, float a)
