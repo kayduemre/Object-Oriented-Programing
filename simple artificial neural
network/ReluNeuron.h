@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Neuron.h"
+#include "math.h"
 using namespace std;
 class ReluNeuron:public Neuron
 {
@@ -8,11 +9,11 @@ protected:
 public:
     ReluNeuron(float z, float a):Neuron(z, a){}
     ~ReluNeuron();
-    void activate()const;
+    float activate()const;
 };
-void ReluNeuron::activate()const
+float ReluNeuron::activate()const
 {
-    cout<<"virtual function";
+    return max(float(0.0),_z);
 }
 
 ReluNeuron::~ReluNeuron()
