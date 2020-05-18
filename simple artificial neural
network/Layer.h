@@ -12,12 +12,15 @@ private:
     int _index;
     Neuron *neurons;
     int** _input;
+    int neuronNumber;
 public:
     Layer(){_index = 0;};
     Layer(int,int);
 
     void createNeuron(int ,int);
+    float* calculateLayerZero_Z(int);
     void setInput(int *, int);
+    void setNeuron(int value, int index){neurons[index].setZ(value);};
     ~Layer();
 };
 
@@ -27,6 +30,7 @@ Layer::Layer(int row, int col)
     for(int i = 0; i < row; ++i)
         _input[i] = new int[0];
     
+    neuronNumber = col;
 }
 
 void Layer::setInput(int *arr, int size)
@@ -70,6 +74,23 @@ void Layer::createNeuron(int type, int number)
         traverse->next = temp;
         traverse = traverse->next;
     }
+}
+
+float* Layer::calculateLayerZero_Z(int oneLayer)
+{
+    float z[oneLayer];
+    float result;
+    for (int i = 0; i < neuronNumber; i++)
+    {
+        result += _input[i][0] * this->neurons[i].getW();
+    }
+    result += this->neurons[0].getB();
+
+    for (int i = 0; i < oneLayer; i++)
+    {
+        z[i] = result;
+    }
+    return z;
 }
 
 Layer::~Layer()
