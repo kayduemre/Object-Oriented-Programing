@@ -11,24 +11,49 @@ class Layer
 private:
     int _index;
     Neuron *neurons;
-    int** _input;
+    int* _input;
     int neuronNumber;
 public:
     Layer(){_index = 0;};
     Layer(int,int);
 
     void createNeuron(int ,int);
-    float* calculateLayerZero_Z(int);
+    float* calculateLayer_Z(int);
+    void doMatrixMultipication(Layer &, Layer&, bool);
+
     void setInput(int *, int);
     void setNeuron(int value, int index){neurons[index].setZ(value);};
+
+    Neuron& getNeuron(int index){return neurons[index];};
+    int* getInput(){return _input;};
+    int getNeuronNumber(){return neuronNumber;};
+
+    void printInput();
+    void printZ();
     ~Layer();
 };
 
+void Layer::printInput()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        cout<<_input[i]<<endl;
+    }
+    
+}
+
+void Layer::printZ()
+{
+    for (int i = 0; i < neuronNumber; i++)
+    {
+       cout << neurons[i].getZ() << endl;
+    }
+    
+}
 Layer::Layer(int row, int col)
 {
-    _input = new int*[row];
-    for(int i = 0; i < row; ++i)
-        _input[i] = new int[0];
+    _input = new int[row];
+    
     
     neuronNumber = col;
 }
@@ -37,7 +62,7 @@ void Layer::setInput(int *arr, int size)
 {
     for (int i = 0; i < size; i++)
     {
-        _input[i][0] = arr[i];
+        _input[i] = arr[i];
     }
     
 }
@@ -76,22 +101,26 @@ void Layer::createNeuron(int type, int number)
     }
 }
 
-float* Layer::calculateLayerZero_Z(int oneLayer)
+float* Layer::calculateLayer_Z(int nNumber)
 {
-    float z[oneLayer];
+    //calculate z values of next layer with a values
+    float *z = new float[nNumber];
     float result;
+
     for (int i = 0; i < neuronNumber; i++)
     {
-        result += _input[i][0] * this->neurons[i].getW();
+        result += this->neurons[i].getA() * this->neurons[i].getW();
     }
     result += this->neurons[0].getB();
 
-    for (int i = 0; i < oneLayer; i++)
+    for (int i = 0; i < neuronNumber; i++)
     {
         z[i] = result;
     }
     return z;
 }
+
+
 
 Layer::~Layer()
 {

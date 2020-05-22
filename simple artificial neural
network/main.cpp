@@ -53,7 +53,32 @@ int main(int argc, char const *argv[])
         newlayer.createNeuron(neuronNumber[i], neurontype[i]);
         network.setLayer(newlayer, i);
     }
+    for (int i = 0; i < layer - 1; i++)
+    {
+        Layer *tail = network.getLayer(i);
+        Layer *curent = network.getLayer(i + 1);
+        network.doMatrixMultipication(tail, curent , i);
+    }
+    network.print();
     
 
+
+
+
+    /*
+    for (int i = 0; i < neuronNumber[1]; i++)
+    {
+       //network.updateLayer(valueZ[i], 1, i);
+    }
+    for (int i = 1; i < layer; i++)
+    {
+        float *valueZ = network.getLayer(i)->calculateLayer_Z(neuronNumber[i]);
+        for (int j = 0; j < neuronNumber[i]; j++)
+        {
+           network.updateLayer(valueZ[i], i, j);
+        }
+
+    }
+    */
     return 0;
 }

@@ -14,7 +14,7 @@ public:
 };
 float Sigmoid::activate()const
 {
-    return 1/(1 + exp(this->_z));
+    return 1/(1 + float(exp(_z)));
 }
 
 #endif
