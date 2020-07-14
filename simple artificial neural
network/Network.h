@@ -1,134 +1,81 @@
-#ifndef NETWORK_H
-#define NETWORK_H
-#include <iostream>
-#include <string>
+/*
+    Emre KAYDU
+    150160552
 
+*/
 #include "Layer.h"
-using namespace std;
 
 class Network
 {
 private:
-
-    Layer* _layer;
-
-    
-    float** _W;
-    float** _B;
-   
+enum {MAX = 100};
+    Layer<Neuron> *layers;
+    int* input;
+    int inputNumbers;
+    int layerNumber;
+    float w;
+    float b;
 public:
-    Network(int, int, int);
-
+    Network(int *, int, int);
+    void setLayer(const Layer<Neuron> *,int);
+    float getW(){return w;};
+    float getB(){return b;};
     void print();
-    void setLayer(const Layer &, int);
-    Layer *getLayer(int index){return &_layer[index];};
-    void doMatrixMultipication(Layer *, Layer* , bool );
-    void updateLayer(int, int, int);
-    
+    void printInput();
+    float matrisMultipication();
     ~Network();
 };
 
+float Network::matrisMultipication()
+{
+    float result = 0.0;
+    for (int i = 0; i < inputNumbers; i++)
+    {
+       result += input[i]*w;
+    }
+    result +=b;
+    return result;
+}
+void Network::printInput()
+{
+    for (int i = 0; i < inputNumbers ; i++)
+    {
+        cout<<input[i]<<endl;
+    }
+    
+}
 void Network::print()
 {
-        cout<<"LAyer0"<<endl;
-        _layer[0].printInput();
-       cout<<"LAyer1"<<endl;
-        _layer[1].printZ();
-        //_layer[2].printZ();
-    
-}
-
-
-void Network::doMatrixMultipication(Layer *tail, Layer *current, bool inf)
-{
-    Layer _tail = *tail;
-    Layer _current = *current;
-
-    
-    float result = 0.0;
-    //for zero layer and first layer
-    if (inf == false)
+    cout<<"Layer 0:"<<endl;
+    this->printInput();
+    for (int i = 1; i < layerNumber; i++)
     {
-        //layer1
-        for (int i = 0; i < current->getNeuronNumber(); i++)
-        {
-            //layer 0
-            for (int j = 0; j < tail->getNeuronNumber(); j++)
-            {
-                result += _layer[0].getInput()[j]*_current.getNeuron(i).getW();
-            }
-            
-            
-            result += _current.getNeuron(i).getB();
-            cout<<"result"<<_current.getNeuron(i).getB();
-            _current.getNeuron(i).setZ(result);
-            /*result = _current.getNeuron(i).activate();
-            _current.getNeuron(i).setA(result);
-            result = 0.0;
-            */
-        }
-    }
-    /*else
-    {
-        for (int i = 0; i < _current.getNeuronNumber(); i++)
-        {
-            for (int j = 0; j < _tail.getNeuronNumber(); j++)
-            {
-                result += _tail.getNeuron(j).getA()*_current.getNeuron(i).getW();
-            }
-            
-            result += _current.getNeuron(i).getB();
-            _current.getNeuron(i).setZ(result);
-            result = _current.getNeuron(i).activate();
-            _current.getNeuron(i).setZ(result);
-            result = 0.0; 
-        }
-        
-    }   */ 
-}
-Network::Network(int row, int col, int layerNumber)
-{
-    _layer = new Layer[layerNumber];
-
-    _W = new float*[row];
-    for(int i = 0; i < row; ++i)
-        _W[i] = new float[col];
-
-    _B = new float*[row];
-    for(int i = 0; i < row; ++i)
-        _B[i] = new float[0];
-    
-    
-
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < col; j++)
-        {
-            _W[i][j] = 0.1;
-        }
-        
-    }
-
-    for (int i = 0; i < row; i++)
-    {
-        _B[i][0] = 0.1;
+        cout<<"Layer "<<i<<":"<<endl;
+        layers[i].print();
     }
 }
 
-void Network::updateLayer(int value, int lIndex, int nIndex)
+Network::Network(int *in, int nNumber, int nLayer)
 {
-    float activation_number;
-    this->_layer[lIndex].setNeuron(value, nIndex);
-    activation_number = this->_layer[lIndex].getNeuron(nIndex).activate();
-    this->_layer[lIndex].getNeuron(nIndex).setA(activation_number);
+
+    this->w = 0.1;
+    this->b = 0.1;
+    this->layerNumber = nLayer;
+    this->input = new int[nNumber];
+    this->inputNumbers = nNumber;
+    this->layers = new Layer<Neuron>[nNumber];
+    for (int i = 0; i < nNumber; i++)
+    {
+        this->input[i] = in[i];
+    }
+    
 }
 
-void Network::setLayer(const Layer &layer, int index)
+void Network::setLayer(const Layer<Neuron> *l, int index)
 {
-   _layer[index] = layer;
-
+    layers[index] = *l;
 }
 Network::~Network()
 {
+    delete layers;
 }
-#endif
